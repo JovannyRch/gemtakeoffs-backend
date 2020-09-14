@@ -36,11 +36,20 @@ class UserController extends Controller
         ]);
         $credentials = $request->only('email', 'password');
 
+        $user = User::firstWhere('email',$credentials['email']);
+
+        if(!$user){
+            return response([
+                'message' => 'User not found',
+            ], 401);
+        }
+
         if (!Auth::attempt($credentials)) {
             return response([
                 'message' => 'Unauthorized'
             ], 401);
         }
+
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -71,7 +80,7 @@ class UserController extends Controller
     }
 
 
-    public function all(){
+    public function all(Request $request){
         return response(User::all());
     }
 

@@ -2,18 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\Api\UserController;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 
 
 Route::group(['prefix' => 'auth','middleware' => ['cors', 'json.response'],], function () {
@@ -29,10 +19,15 @@ Route::group(['prefix' => 'auth','middleware' => ['cors', 'json.response'],], fu
 
 
 
-Route::group(['middleware' => ['cors', 'json.response','auth:api']], function () {
+Route::group(['middleware' => ['cors', 'json.response']], function () {
+    //Users
     Route::get('users',  [UserController::class, 'all']);
     Route::get('users/{id}',  [UserController::class, 'single']);
     Route::put('users/{id}',  [UserController::class, 'update']);
     Route::delete('users/{id}',  [UserController::class, 'delete']);
+
+    //Projects
+    Route::get('projects',  [ProjectController::class, 'all']);
+
 });
 
